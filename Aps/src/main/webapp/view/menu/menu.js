@@ -1,5 +1,5 @@
 async function loadData() {
-    getRequest("/getLanches");
+    requisicao("/getLanches", getLanches);
     getRequest("../../getBebidasCliente", getBebidas);
 }
 

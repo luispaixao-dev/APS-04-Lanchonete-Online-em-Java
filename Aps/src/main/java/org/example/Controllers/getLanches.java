@@ -15,14 +15,12 @@ import org.example.DAO.DaoLanche;
 import org.example.Helpers.ValidadorCookie;
 import jakarta.servlet.http.Cookie;
 
-import javax.script.ScriptContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
 
 /**
- *
  * @author kener_000
  */
 public class getLanches extends HttpServlet {
@@ -31,14 +29,14 @@ public class getLanches extends HttpServlet {
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+    }
 //            PrintWriter out = response.getWriter();
 //            out.println("<html>");
 //            out.println("<body>");
@@ -47,65 +45,60 @@ public class getLanches extends HttpServlet {
 //            out.println("</html>");
 
 
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 
-
-
-       response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request  servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException      if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        //processRequest(request, response);
+        response.setContentType("application/json");
         ////////Validar Cookie
         boolean resultado = false;
-        
-        try{
-        Cookie[] cookies = request.getCookies();
-        ValidadorCookie validar = new ValidadorCookie();
-        
-        resultado = validar.validarFuncionario(cookies);
-        }catch(java.lang.NullPointerException e){System.out.println(e);}
+
+        try {
+            Cookie[] cookies = request.getCookies();
+            ValidadorCookie validar = new ValidadorCookie();
+
+            resultado = validar.validarFuncionario(cookies);
+        } catch (java.lang.NullPointerException e) {
+            System.out.println(e);
+        }
         //////////////
-        
-        if(resultado){
-            
+
+        if (resultado) {
+
             DaoLanche lancheDAO = new DaoLanche();
 
             List<Lanche> lanches = lancheDAO.listarTodos();
 
             Gson gson = new Gson();
             String json = gson.toJson(lanches);
-
-        try (PrintWriter out = response.getWriter()) {
-            out.print(json);
-            out.flush();
+            try (PrintWriter out = response.getWriter()) {
+                out.print(json);
+                out.flush();
             }
         } else {
             try (PrintWriter out = response.getWriter()) {
-            out.println("erro");
+                out.println("erro");
             }
         }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
     }
 
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
