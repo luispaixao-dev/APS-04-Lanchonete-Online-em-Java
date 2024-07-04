@@ -1,0 +1,319 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > DaoRelatorio</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">org.example.lanchonete.dao</a>
+</div>
+
+<h1>Coverage Summary for Class: DaoRelatorio (org.example.lanchonete.dao)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DaoRelatorio</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/66)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * To change this license header, choose License Headers in Project Properties.
+&nbsp; * To change this template file, choose Tools | Templates
+&nbsp; * and open the template in the editor.
+&nbsp; */
+&nbsp;package org.example.lanchonete.dao;
+&nbsp;
+&nbsp;import org.example.lanchonete.model.RelatorioBebidas;
+&nbsp;import org.example.lanchonete.model.RelatorioGastos;
+&nbsp;import org.example.lanchonete.model.RelatorioLanches;
+&nbsp;import java.sql.Connection;
+&nbsp;import java.sql.PreparedStatement;
+&nbsp;import java.sql.ResultSet;
+&nbsp;import java.sql.SQLException;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;/**
+&nbsp; *
+&nbsp; * @author gabriel
+&nbsp; */
+&nbsp;public class DaoRelatorio {
+&nbsp;    private Connection conecta;
+&nbsp;    
+<b class="nc">&nbsp;    public DaoRelatorio(){</b>
+<b class="nc">&nbsp;        this.conecta = new DaoUtil().conecta();</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    public List&lt;RelatorioLanches&gt; listarRelLanches(){
+<b class="nc">&nbsp;        String sql = &quot;SELECT l.nm_lanche, i.nm_ingrediente, il.quantidade,\n&quot; +</b>
+&nbsp;                &quot;i.valor_compra * il.quantidade AS custo_ingrediente,\n&quot; +
+&nbsp;                &quot;i.valor_venda * il.quantidade AS venda_ingrediente,\n&quot; +
+&nbsp;                &quot;(i.valor_venda - i.valor_compra)*il.quantidade AS lucro_ingrediente,\n&quot; +
+&nbsp;                &quot;l.valor_venda,\n&quot;+
+&nbsp;                &quot;(SELECT SUM(i.valor_compra*il.quantidade)\n&quot; +
+&nbsp;                &quot;FROM tb_ingredientes_lanche il\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_lanches l ON(il.id_lanche = l.id_lanche)\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_ingredientes i ON(il.id_ingrediente = i.id_ingrediente)) AS custo_total_ingredientes,\n&quot; +
+&nbsp;                &quot;(SELECT SUM(i.valor_venda*il.quantidade)\n&quot; +
+&nbsp;                &quot;FROM tb_ingredientes_lanche il\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_lanches l ON(il.id_lanche = l.id_lanche)\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_ingredientes i ON(il.id_ingrediente = i.id_ingrediente)) AS venda_total_ingredientes,\n&quot; +
+&nbsp;                &quot;(SELECT SUM(i.valor_venda*il.quantidade)-SUM(i.valor_compra*il.quantidade)\n&quot; +
+&nbsp;                &quot;FROM tb_ingredientes_lanche il\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_lanches l ON(il.id_lanche = l.id_lanche)\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_ingredientes i ON(il.id_ingrediente = i.id_ingrediente)) AS lucro_total_ingredientes,\n&quot; +
+&nbsp;                &quot;l.valor_venda - (SELECT SUM(i.valor_venda*il.quantidade)\n&quot; +
+&nbsp;                &quot;FROM tb_ingredientes_lanche il\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_lanches l ON(il.id_lanche = l.id_lanche)\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_ingredientes i ON(il.id_ingrediente = i.id_ingrediente)) AS lucro_operacional,\n&quot; +
+&nbsp;                &quot;((SELECT SUM(i.valor_venda*il.quantidade)-SUM(i.valor_compra*il.quantidade)\n&quot; +
+&nbsp;                &quot;FROM tb_ingredientes_lanche il\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_lanches l ON(il.id_lanche = l.id_lanche)\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_ingredientes i ON(il.id_ingrediente = i.id_ingrediente))) +\n&quot; +
+&nbsp;                &quot;(l.valor_venda - (SELECT SUM(i.valor_venda*il.quantidade)\n&quot; +
+&nbsp;                &quot;FROM tb_ingredientes_lanche il\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_lanches l ON(il.id_lanche = l.id_lanche)\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_ingredientes i ON(il.id_ingrediente = i.id_ingrediente))) AS lucro_total\n&quot;+
+&nbsp;                &quot;FROM tb_ingredientes_lanche il\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_lanches l ON(il.id_lanche = l.id_lanche)\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_ingredientes i ON(il.id_ingrediente = i.id_ingrediente)\n&quot; +
+&nbsp;                &quot;GROUP BY l.nm_lanche, i.nm_ingrediente, il.quantidade, i.valor_venda, i.valor_compra, l.valor_venda\n&quot;+
+&nbsp;                &quot;ORDER BY l.nm_lanche;&quot;;
+&nbsp;        /*String sql = &quot;select nm_lanche, nm_lanche as nm_ingrediente, nm_lanche as quantidade,&quot;
+&nbsp;                + &quot;nm_lanche as custo_ingrediente, nm_lanche as venda_ingrediente, nm_lanche as lucro_ingrediente,&quot;
+&nbsp;                + &quot;nm_lanche as valor_venda, nm_lanche as custo_total_ingredientes, &quot;
+&nbsp;                + &quot;nm_lanche as venda_total_ingredientes, nm_lanches as lucro_total_ingredientes, &quot;
+&nbsp;                + &quot;nm_lanche as lucro_operacional, nm_lanche as lucro_total &quot;
+&nbsp;                + &quot;from tb_lanches;&quot;;*/
+&nbsp;        ResultSet rs;
+<b class="nc">&nbsp;        List&lt;RelatorioLanches&gt; relatorio = new ArrayList&lt;RelatorioLanches&gt;();</b>
+&nbsp;        try{
+<b class="nc">&nbsp;            PreparedStatement stmt = conecta.prepareStatement(sql);</b>
+<b class="nc">&nbsp;            rs = stmt.executeQuery();</b>
+<b class="nc">&nbsp;            while(rs.next()){</b>
+<b class="nc">&nbsp;                RelatorioLanches rl = new RelatorioLanches();</b>
+<b class="nc">&nbsp;                rl.setLanche(rs.getString(&quot;nm_lanche&quot;));</b>
+<b class="nc">&nbsp;                rl.setIngrediente(rs.getString(&quot;nm_ingrediente&quot;));</b>
+<b class="nc">&nbsp;                rl.setQuantidade(rs.getInt(&quot;quantidade&quot;));</b>
+<b class="nc">&nbsp;                rl.setCustoIngrediente(rs.getFloat(&quot;custo_ingrediente&quot;));</b>
+<b class="nc">&nbsp;                rl.setVendaIngrediente(rs.getFloat(&quot;venda_ingrediente&quot;));</b>
+<b class="nc">&nbsp;                rl.setLucroIngrediente(rs.getFloat(&quot;lucro_ingrediente&quot;));</b>
+<b class="nc">&nbsp;                rl.setValorVenda(rs.getFloat(&quot;valor_venda&quot;));</b>
+<b class="nc">&nbsp;                rl.setCustoTotalIngredientes(rs.getFloat(&quot;custo_total_ingredientes&quot;));</b>
+<b class="nc">&nbsp;                rl.setVendaTotalIngredientes(rs.getFloat(&quot;venda_total_ingredientes&quot;));</b>
+<b class="nc">&nbsp;                rl.setLucroTotalIngredeintes(rs.getFloat(&quot;lucro_total_ingredientes&quot;));</b>
+<b class="nc">&nbsp;                rl.setLucroOperacional(rs.getFloat(&quot;lucro_operacional&quot;));</b>
+<b class="nc">&nbsp;                rl.setLucroTotal(rs.getFloat(&quot;lucro_total&quot;));</b>
+&nbsp;
+<b class="nc">&nbsp;                relatorio.add(rl);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            rs.close();</b>
+<b class="nc">&nbsp;            stmt.close();</b>
+<b class="nc">&nbsp;            return relatorio;</b>
+<b class="nc">&nbsp;        }catch(SQLException e){</b>
+<b class="nc">&nbsp;            System.out.println(e);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return relatorio;</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    public List&lt;RelatorioBebidas&gt; listarRelBebidas(){
+<b class="nc">&nbsp;        String sql = &quot;SELECT p.id_pedido, CONCAT(c.nome,&#39; &#39;,c.sobrenome) as cliente, b.nm_bebida, bp.quantidade,\n&quot; +</b>
+&nbsp;                &quot;SUM (b.valor_compra)*bp.quantidade AS custo_bebidas,\n&quot; +
+&nbsp;                &quot;SUM(b.valor_venda)*bp.quantidade AS venda_bebidas,\n&quot; +
+&nbsp;                &quot;(SUM(b.valor_venda)*bp.quantidade) - (SUM (b.valor_compra)*bp.quantidade) AS lucro_por_bebida,\n&quot; +
+&nbsp;                &quot;(SELECT SUM(b.valor_compra*bp.quantidade)\n&quot; +
+&nbsp;                &quot;FROM tb_bebidas b\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_bebidas_pedido bp ON(b.id_bebida = bp.id_bebida \n&quot; +
+&nbsp;                &quot;AND bp.id_pedido = p.id_pedido)) AS total_custo_bebidas,\n&quot; +
+&nbsp;                &quot;(SELECT SUM(b.valor_venda*bp.quantidade)\n&quot; +
+&nbsp;                &quot;FROM tb_bebidas b\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_bebidas_pedido bp ON(b.id_bebida = bp.id_bebida \n&quot; +
+&nbsp;                &quot;AND bp.id_pedido = p.id_pedido)) AS total_venda_bebidas,\n&quot; +
+&nbsp;                &quot;(SELECT SUM(b.valor_venda*bp.quantidade)\n&quot; +
+&nbsp;                &quot;FROM tb_bebidas b\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_bebidas_pedido bp ON(b.id_bebida = bp.id_bebida \n&quot; +
+&nbsp;                &quot;AND bp.id_pedido = p.id_pedido)) -\n&quot; +
+&nbsp;                &quot;(SELECT SUM(b.valor_compra*bp.quantidade)\n&quot; +
+&nbsp;                &quot;FROM tb_bebidas b\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_bebidas_pedido bp ON(b.id_bebida = bp.id_bebida \n&quot; +
+&nbsp;                &quot;AND bp.id_pedido = p.id_pedido)) AS lucro_total\n&quot; +
+&nbsp;                &quot;FROM tb_pedidos p\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_bebidas_pedido bp ON(p.id_pedido = bp.id_pedido)\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_clientes c ON(c.id_cliente = p.id_cliente)\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_bebidas b ON(b.id_bebida = bp.id_bebida)\n&quot; +
+&nbsp;                &quot;GROUP BY p.id_pedido,c.nome, c.sobrenome, b.nm_bebida, bp.quantidade\n&quot; +
+&nbsp;                &quot;ORDER BY p.id_pedido;&quot;;
+<b class="nc">&nbsp;        List&lt;RelatorioBebidas&gt; relatorio = new ArrayList&lt;RelatorioBebidas&gt;();</b>
+&nbsp;        ResultSet rs;
+&nbsp;        try{
+<b class="nc">&nbsp;            PreparedStatement stmt = conecta.prepareStatement(sql);</b>
+<b class="nc">&nbsp;            rs = stmt.executeQuery();</b>
+<b class="nc">&nbsp;            while(rs.next()){</b>
+<b class="nc">&nbsp;                RelatorioBebidas rb = new RelatorioBebidas();</b>
+<b class="nc">&nbsp;                rb.setIdPedido(rs.getInt(&quot;id_pedido&quot;));</b>
+<b class="nc">&nbsp;                rb.setCliente(rs.getString(&quot;Cliente&quot;));</b>
+<b class="nc">&nbsp;                rb.setNomeBebida(rs.getString(&quot;nm_bebida&quot;));</b>
+<b class="nc">&nbsp;                rb.setQuantidade(rs.getInt(&quot;quantidade&quot;));</b>
+<b class="nc">&nbsp;                rb.setCustoBebidas(rs.getFloat(&quot;custo_bebidas&quot;));</b>
+<b class="nc">&nbsp;                rb.setVendaBebidas(rs.getFloat(&quot;venda_bebidas&quot;));</b>
+<b class="nc">&nbsp;                rb.setLucroBebidas(rs.getFloat(&quot;lucro_por_bebida&quot;));</b>
+<b class="nc">&nbsp;                rb.setTotalCustoBebidas(rs.getFloat(&quot;total_custo_bebidas&quot;));</b>
+<b class="nc">&nbsp;                rb.setTotalVendaBebidas(rs.getFloat(&quot;total_venda_bebidas&quot;));</b>
+<b class="nc">&nbsp;                rb.setTotalLucroBebidas(rs.getFloat(&quot;lucro_total&quot;));</b>
+<b class="nc">&nbsp;                relatorio.add(rb);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            rs.close();</b>
+<b class="nc">&nbsp;            stmt.close();</b>
+<b class="nc">&nbsp;            return relatorio;</b>
+<b class="nc">&nbsp;        }catch(SQLException e){</b>
+<b class="nc">&nbsp;            System.out.println(e);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return relatorio;</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    public List&lt;RelatorioGastos&gt; listarRelGastos(){
+<b class="nc">&nbsp;        String sql = &quot;SELECT (SELECT SUM(i.valor_compra*il.quantidade*lp.quantidade)\n&quot; +</b>
+&nbsp;                &quot;FROM tb_lanches_pedido lp\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_lanches l ON(lp.id_lanche = l.id_lanche)\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_ingredientes_lanche il ON(il.id_lanche = l.id_lanche)\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_ingredientes i ON(il.id_ingrediente = i.id_ingrediente))+\n&quot; +
+&nbsp;                &quot;(SELECT SUM(b.valor_compra*bp.quantidade)\n&quot; +
+&nbsp;                &quot;FROM tb_bebidas b\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_bebidas_pedido bp ON(b.id_bebida = bp.id_bebida)) AS custo,\n&quot; +
+&nbsp;                &quot;(SELECT SUM(l.valor_venda*lp.quantidade) FROM tb_lanches l\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_lanches_pedido lp ON (l.id_lanche = lp.id_lanche))+\n&quot; +
+&nbsp;                &quot;(SELECT SUM(b.valor_venda*bp.quantidade)\n&quot; +
+&nbsp;                &quot;FROM tb_bebidas b\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_bebidas_pedido bp ON(b.id_bebida = bp.id_bebida)) AS vendas,\n&quot; +
+&nbsp;                &quot;((SELECT SUM(l.valor_venda*lp.quantidade) FROM tb_lanches l\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_lanches_pedido lp ON (l.id_lanche = lp.id_lanche)) -\n&quot; +
+&nbsp;                &quot;(SELECT SUM(i.valor_compra*il.quantidade*lp.quantidade)\n&quot; +
+&nbsp;                &quot;FROM tb_lanches_pedido lp\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_lanches l ON(lp.id_lanche = l.id_lanche)\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_ingredientes_lanche il ON(il.id_lanche = l.id_lanche)\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_ingredientes i ON(il.id_ingrediente = i.id_ingrediente)))+\n&quot; +
+&nbsp;                &quot;((SELECT SUM(b.valor_venda*bp.quantidade)\n&quot; +
+&nbsp;                &quot;FROM tb_bebidas b\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_bebidas_pedido bp ON(b.id_bebida = bp.id_bebida))-\n&quot; +
+&nbsp;                &quot;(SELECT SUM(b.valor_compra*bp.quantidade)\n&quot; +
+&nbsp;                &quot;FROM tb_bebidas b\n&quot; +
+&nbsp;                &quot;INNER JOIN tb_bebidas_pedido bp ON(b.id_bebida = bp.id_bebida)))AS lucro&quot;;
+<b class="nc">&nbsp;        List&lt;RelatorioGastos&gt; relatorio = new ArrayList&lt;RelatorioGastos&gt;();</b>
+&nbsp;        ResultSet rs;
+&nbsp;        try{
+<b class="nc">&nbsp;            PreparedStatement stmt = conecta.prepareStatement(sql);</b>
+<b class="nc">&nbsp;            rs = stmt.executeQuery();</b>
+<b class="nc">&nbsp;            while(rs.next()){</b>
+<b class="nc">&nbsp;                RelatorioGastos rg = new RelatorioGastos();</b>
+<b class="nc">&nbsp;                rg.setCusto(rs.getFloat(&quot;custo&quot;));</b>
+<b class="nc">&nbsp;                rg.setVenda(rs.getFloat(&quot;vendas&quot;));</b>
+<b class="nc">&nbsp;                rg.setLucro(rs.getFloat(&quot;custo&quot;));</b>
+<b class="nc">&nbsp;                relatorio.add(rg);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            rs.close();</b>
+<b class="nc">&nbsp;            stmt.close();</b>
+<b class="nc">&nbsp;            return relatorio;</b>
+<b class="nc">&nbsp;        }catch(SQLException e){</b>
+<b class="nc">&nbsp;            System.out.println(e);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return relatorio;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-07-01 08:13</div>
+</div>
+</body>
+</html>

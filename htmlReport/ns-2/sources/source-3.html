@@ -1,0 +1,308 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > DaoEndereco</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">org.example.lanchonete.dao</a>
+</div>
+
+<h1>Coverage Summary for Class: DaoEndereco (org.example.lanchonete.dao)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DaoEndereco</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    33,3%
+  </span>
+  <span class="absValue">
+    (2/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    12,5%
+  </span>
+  <span class="absValue">
+    (1/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    16,7%
+  </span>
+  <span class="absValue">
+    (15/90)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * To change this license header, choose License Headers in Project Properties.
+&nbsp; * To change this template file, choose Tools | Templates
+&nbsp; * and open the template in the editor.
+&nbsp; */
+&nbsp;package org.example.lanchonete.dao;
+&nbsp;
+&nbsp;import org.example.lanchonete.model.Endereco;
+&nbsp;import java.sql.Connection;
+&nbsp;import java.sql.PreparedStatement;
+&nbsp;import java.sql.ResultSet;
+&nbsp;import java.sql.SQLException;
+&nbsp;
+&nbsp;/**
+&nbsp; *
+&nbsp; * @author kener_000
+&nbsp; */
+&nbsp;public class DaoEndereco {
+&nbsp;    private Connection conecta;
+&nbsp;
+<b class="fc">&nbsp;    public DaoEndereco() {</b>
+<b class="fc">&nbsp;        this.conecta = new DaoUtil().conecta();</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    public void salvar(Endereco endereco){
+<b class="nc">&nbsp;        String sql = &quot;INSERT INTO tb_enderecos(rua, bairro, numero, complemento, cidade, estado) &quot;</b>
+&nbsp;                + &quot;VALUES(?,?,?,?,?,?)&quot;;
+&nbsp;        
+&nbsp;        try{
+<b class="nc">&nbsp;            PreparedStatement stmt = conecta.prepareStatement(sql);</b>
+<b class="nc">&nbsp;            stmt.setString(1, endereco.getRua());</b>
+<b class="nc">&nbsp;            stmt.setString(2, endereco.getBairro());</b>
+<b class="nc">&nbsp;            stmt.setInt(3, endereco.getNumero());</b>
+<b class="nc">&nbsp;            stmt.setString(4, endereco.getComplemento());</b>
+<b class="nc">&nbsp;            stmt.setString(5, endereco.getCidade());</b>
+<b class="nc">&nbsp;            stmt.setString(6, endereco.getEstado());</b>
+&nbsp;            
+<b class="nc">&nbsp;            stmt.execute();</b>
+<b class="nc">&nbsp;            stmt.close();</b>
+&nbsp;            
+&nbsp;            
+<b class="nc">&nbsp;        }catch(Exception e){</b>
+<b class="nc">&nbsp;            throw new RuntimeException(e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;    
+&nbsp;    public int validaEndereco(Endereco endereco){
+<b class="fc">&nbsp;        String sql = &quot;SELECT id_endereco &quot;</b>
+&nbsp;                + &quot;FROM tb_enderecos &quot;
+&nbsp;                + &quot;WHERE rua = ? &quot;
+&nbsp;                + &quot;AND numero = ? &quot;
+&nbsp;                + &quot;AND bairro = ? &quot;
+&nbsp;                + &quot;AND cidade = ? &quot;
+&nbsp;                + &quot;AND estado = ? &quot;;
+<b class="fc">&nbsp;        Endereco end = new Endereco();</b>
+&nbsp;        try{
+<b class="fc">&nbsp;            PreparedStatement stmt = conecta.prepareStatement(sql);</b>
+<b class="fc">&nbsp;            stmt.setString(1, endereco.getRua());</b>
+<b class="fc">&nbsp;            System.out.println(endereco.getRua());</b>
+<b class="fc">&nbsp;            stmt.setInt(2, endereco.getNumero());</b>
+<b class="fc">&nbsp;            stmt.setString(3, endereco.getBairro());</b>
+<b class="fc">&nbsp;            stmt.setString(4, endereco.getCidade());</b>
+<b class="fc">&nbsp;            stmt.setString(5, endereco.getEstado());</b>
+&nbsp;            
+&nbsp;            ResultSet rs;
+<b class="fc">&nbsp;            rs = stmt.executeQuery();</b>
+<b class="pc">&nbsp;            if(rs.next()){</b>
+<b class="fc">&nbsp;                end.setId_endereco(rs.getInt(&quot;id_endereco&quot;));</b>
+<b class="fc">&nbsp;                return end.getId_endereco();   </b>
+&nbsp;            } else{
+<b class="nc">&nbsp;                return 0;</b>
+&nbsp;            }
+&nbsp;            
+<b class="nc">&nbsp;        }catch(SQLException e){</b>
+<b class="nc">&nbsp;            System.out.println(e);;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return end.getId_endereco();</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    public Endereco pesquisarEnderecoPorObjeto(Endereco endereco){
+&nbsp;    
+&nbsp;        String where;
+<b class="nc">&nbsp;        where = &quot;WHERE bairro = ? AND rua = ? AND cidade = ? AND numero = ?&quot;;</b>
+<b class="nc">&nbsp;        String sql = &quot;SELECT * FROM tb_enderecos &quot;+where;</b>
+&nbsp;        ResultSet rs;
+<b class="nc">&nbsp;        Endereco resultado = new Endereco();</b>
+&nbsp;
+&nbsp;
+&nbsp;        try{
+&nbsp;
+<b class="nc">&nbsp;            PreparedStatement stmt = conecta.prepareStatement(sql);</b>
+<b class="nc">&nbsp;            stmt.setString(1, endereco.getBairro());</b>
+<b class="nc">&nbsp;            stmt.setString(2, endereco.getRua());</b>
+<b class="nc">&nbsp;            stmt.setString(3, endereco.getCidade());</b>
+<b class="nc">&nbsp;            stmt.setInt(4, endereco.getNumero());</b>
+&nbsp;
+<b class="nc">&nbsp;            rs = stmt.executeQuery();</b>
+&nbsp;
+<b class="nc">&nbsp;            while(rs.next()){</b>
+&nbsp;                
+<b class="nc">&nbsp;                resultado.setCidade(rs.getString(&quot;cidade&quot;));</b>
+<b class="nc">&nbsp;                resultado.setEstado(rs.getString(&quot;estado&quot;));</b>
+<b class="nc">&nbsp;                resultado.setBairro(rs.getString(&quot;bairro&quot;));</b>
+<b class="nc">&nbsp;                resultado.setRua(rs.getString(&quot;rua&quot;));</b>
+<b class="nc">&nbsp;                resultado.setNumero(rs.getInt(&quot;numero&quot;));</b>
+<b class="nc">&nbsp;                resultado.setComplemento(rs.getString(&quot;complemento&quot;));</b>
+<b class="nc">&nbsp;                resultado.setId_endereco(rs.getInt(&quot;id_endereco&quot;));</b>
+&nbsp;            }
+<b class="nc">&nbsp;            rs.close();</b>
+<b class="nc">&nbsp;            stmt.close();</b>
+&nbsp;
+<b class="nc">&nbsp;            return resultado;</b>
+&nbsp;
+<b class="nc">&nbsp;        } catch(SQLException e){</b>
+<b class="nc">&nbsp;            System.out.println(e);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        return resultado;</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    public Endereco pesquisarEnderecoPorID(String id){
+&nbsp;   
+<b class="nc">&nbsp;        String sql = &quot;SELECT * FROM tb_enderecos WHERE id_endereco = &#39;&quot;+id+&quot;&#39;&quot;;</b>
+&nbsp;        ResultSet rs;
+<b class="nc">&nbsp;        Endereco resultado = new Endereco();</b>
+&nbsp;        
+&nbsp;        try{
+&nbsp;
+<b class="nc">&nbsp;            PreparedStatement stmt = conecta.prepareStatement(sql);</b>
+<b class="nc">&nbsp;            rs = stmt.executeQuery();</b>
+&nbsp;
+<b class="nc">&nbsp;            while(rs.next()){</b>
+&nbsp;                
+<b class="nc">&nbsp;                resultado.setCidade(rs.getString(&quot;cidade&quot;));</b>
+<b class="nc">&nbsp;                resultado.setEstado(rs.getString(&quot;estado&quot;));</b>
+<b class="nc">&nbsp;                resultado.setBairro(rs.getString(&quot;bairro&quot;));</b>
+<b class="nc">&nbsp;                resultado.setRua(rs.getString(&quot;rua&quot;));</b>
+<b class="nc">&nbsp;                resultado.setNumero(rs.getInt(&quot;numero&quot;));</b>
+<b class="nc">&nbsp;                resultado.setComplemento(rs.getString(&quot;complemento&quot;));</b>
+<b class="nc">&nbsp;                resultado.setId_endereco(rs.getInt(&quot;id_endereco&quot;));</b>
+&nbsp;            }
+<b class="nc">&nbsp;            rs.close();</b>
+<b class="nc">&nbsp;            stmt.close();</b>
+&nbsp;
+<b class="nc">&nbsp;            return resultado;</b>
+&nbsp;
+<b class="nc">&nbsp;        } catch(SQLException e){</b>
+<b class="nc">&nbsp;            System.out.println(e);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        return resultado;</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    public Endereco pesquisarEnderecoPorID(int id){
+&nbsp;   
+<b class="nc">&nbsp;        String sql = &quot;SELECT * FROM tb_enderecos WHERE id_endereco = &#39;&quot;+String.valueOf(id)+&quot;&#39;&quot;;</b>
+&nbsp;        ResultSet rs;
+<b class="nc">&nbsp;        Endereco resultado = new Endereco();</b>
+&nbsp;        
+&nbsp;        try{
+&nbsp;
+<b class="nc">&nbsp;            PreparedStatement stmt = conecta.prepareStatement(sql);</b>
+<b class="nc">&nbsp;            rs = stmt.executeQuery();</b>
+&nbsp;
+<b class="nc">&nbsp;            while(rs.next()){</b>
+&nbsp;                
+<b class="nc">&nbsp;                resultado.setCidade(rs.getString(&quot;cidade&quot;));</b>
+<b class="nc">&nbsp;                resultado.setEstado(rs.getString(&quot;estado&quot;));</b>
+<b class="nc">&nbsp;                resultado.setBairro(rs.getString(&quot;bairro&quot;));</b>
+<b class="nc">&nbsp;                resultado.setRua(rs.getString(&quot;rua&quot;));</b>
+<b class="nc">&nbsp;                resultado.setNumero(rs.getInt(&quot;numero&quot;));</b>
+<b class="nc">&nbsp;                resultado.setComplemento(rs.getString(&quot;complemento&quot;));</b>
+<b class="nc">&nbsp;                resultado.setId_endereco(rs.getInt(&quot;id_endereco&quot;));</b>
+&nbsp;            }
+<b class="nc">&nbsp;            rs.close();</b>
+<b class="nc">&nbsp;            stmt.close();</b>
+&nbsp;
+<b class="nc">&nbsp;            return resultado;</b>
+&nbsp;
+<b class="nc">&nbsp;        } catch(SQLException e){</b>
+<b class="nc">&nbsp;            System.out.println(e);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        return resultado;</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    }
+&nbsp;    
+&nbsp;    
+&nbsp;    
+&nbsp;    
+&nbsp;    
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-07-01 08:13</div>
+</div>
+</body>
+</html>

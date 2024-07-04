@@ -1,0 +1,218 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ValidarToken</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">org.example.lanchonete.controller</a>
+</div>
+
+<h1>Coverage Summary for Class: ValidarToken (org.example.lanchonete.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ValidarToken</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/19)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * To change this license header, choose License Headers in Project Properties.
+&nbsp; * To change this template file, choose Tools | Templates
+&nbsp; * and open the template in the editor.
+&nbsp; */
+&nbsp;package org.example.lanchonete.controller;
+&nbsp;
+&nbsp;import org.example.lanchonete.helper.ValidadorCookie;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;import java.io.PrintWriter;
+&nbsp;
+&nbsp;import jakarta.servlet.ServletException;
+&nbsp;import jakarta.servlet.http.Cookie;
+&nbsp;import jakarta.servlet.http.HttpServlet;
+&nbsp;import jakarta.servlet.http.HttpServletRequest;
+&nbsp;import jakarta.servlet.http.HttpServletResponse;
+&nbsp;
+&nbsp;/**
+&nbsp; *
+&nbsp; * @author kener_000
+&nbsp; */
+<b class="nc">&nbsp;public class ValidarToken extends HttpServlet {</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Processes requests for both HTTP &lt;code&gt;GET&lt;/code&gt; and &lt;code&gt;POST&lt;/code&gt;
+&nbsp;     * methods.
+&nbsp;     *
+&nbsp;     * @param request servlet request
+&nbsp;     * @param response servlet response
+&nbsp;     * @throws ServletException if a servlet-specific error occurs
+&nbsp;     * @throws IOException if an I/O error occurs
+&nbsp;     */
+&nbsp;    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+&nbsp;            throws ServletException, IOException {
+<b class="nc">&nbsp;        response.setContentType(&quot;application/json&quot;);</b>
+<b class="nc">&nbsp;        response.setCharacterEncoding(&quot;UTF-8&quot;);</b>
+&nbsp;        
+&nbsp;        ////////Validar Cookie
+<b class="nc">&nbsp;        boolean resultado = false;</b>
+&nbsp;        
+&nbsp;        try{
+<b class="nc">&nbsp;        Cookie[] cookies = request.getCookies();</b>
+<b class="nc">&nbsp;        ValidadorCookie validar = new ValidadorCookie();</b>
+&nbsp;        
+<b class="nc">&nbsp;        resultado = validar.validar(cookies);</b>
+<b class="nc">&nbsp;        }catch(java.lang.NullPointerException e){System.out.println(e);}</b>
+&nbsp;        //////////////
+&nbsp;        
+<b class="nc">&nbsp;        if(resultado){</b>
+&nbsp;            
+<b class="nc">&nbsp;            try (PrintWriter out = response.getWriter()) {</b>
+<b class="nc">&nbsp;                out.println(&quot;valido&quot;);</b>
+<b class="nc">&nbsp;                out.flush();</b>
+<b class="nc">&nbsp;                }</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            try (PrintWriter out = response.getWriter()) {</b>
+<b class="nc">&nbsp;                out.println(&quot;erro&quot;);</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;HttpServlet methods. Click on the + sign on the left to edit the code.&quot;&gt;
+&nbsp;    /**
+&nbsp;     * Handles the HTTP &lt;code&gt;GET&lt;/code&gt; method.
+&nbsp;     *
+&nbsp;     * @param request servlet request
+&nbsp;     * @param response servlet response
+&nbsp;     * @throws ServletException if a servlet-specific error occurs
+&nbsp;     * @throws IOException if an I/O error occurs
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+&nbsp;            throws ServletException, IOException {
+<b class="nc">&nbsp;        processRequest(request, response);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the HTTP &lt;code&gt;POST&lt;/code&gt; method.
+&nbsp;     *
+&nbsp;     * @param request servlet request
+&nbsp;     * @param response servlet response
+&nbsp;     * @throws ServletException if a servlet-specific error occurs
+&nbsp;     * @throws IOException if an I/O error occurs
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+&nbsp;            throws ServletException, IOException {
+<b class="nc">&nbsp;        processRequest(request, response);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns a short description of the servlet.
+&nbsp;     *
+&nbsp;     * @return a String containing servlet description
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public String getServletInfo() {
+<b class="nc">&nbsp;        return &quot;Short description&quot;;</b>
+&nbsp;    }// &lt;/editor-fold&gt;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-07-01 08:13</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,303 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > DaoLanche</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">org.example.lanchonete.dao</a>
+</div>
+
+<h1>Coverage Summary for Class: DaoLanche (org.example.lanchonete.dao)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DaoLanche</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/78)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/*
+&nbsp; * To change this license header, choose License Headers in Project Properties.
+&nbsp; * To change this template file, choose Tools | Templates
+&nbsp; * and open the template in the editor.
+&nbsp; */
+&nbsp;package org.example.lanchonete.dao;
+&nbsp;
+&nbsp;import org.example.lanchonete.model.Ingrediente;
+&nbsp;import org.example.lanchonete.model.Lanche;
+&nbsp;import java.sql.Connection;
+&nbsp;import java.sql.PreparedStatement;
+&nbsp;import java.sql.ResultSet;
+&nbsp;import java.sql.SQLException;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;/**
+&nbsp; *
+&nbsp; * @author kener_000
+&nbsp; */
+&nbsp;public class DaoLanche {
+&nbsp;    private Connection conecta;
+&nbsp;
+<b class="nc">&nbsp;    public DaoLanche() {</b>
+<b class="nc">&nbsp;        this.conecta = new DaoUtil().conecta();</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    public void salvar(Lanche lanche){
+<b class="nc">&nbsp;        String sql = &quot;INSERT INTO tb_lanches(nm_lanche, descricao, valor_venda, fg_ativo) &quot;</b>
+&nbsp;                + &quot;VALUES(?,?,?,?)&quot;;
+&nbsp;        
+&nbsp;        try{
+<b class="nc">&nbsp;            PreparedStatement stmt = conecta.prepareStatement(sql);</b>
+<b class="nc">&nbsp;            stmt.setString(1, lanche.getNome());</b>
+<b class="nc">&nbsp;            stmt.setString(2, lanche.getDescricao());</b>
+<b class="nc">&nbsp;            stmt.setDouble(3, lanche.getValor_venda());</b>
+<b class="nc">&nbsp;            stmt.setInt(4, 1);</b>
+&nbsp;
+&nbsp;            
+<b class="nc">&nbsp;            stmt.execute();</b>
+<b class="nc">&nbsp;            stmt.close();</b>
+&nbsp;            
+&nbsp;            
+<b class="nc">&nbsp;        }catch(Exception e){</b>
+<b class="nc">&nbsp;            throw new RuntimeException(e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;    
+&nbsp;    public void salvarCliente(Lanche lanche){
+<b class="nc">&nbsp;        String sql = &quot;INSERT INTO tb_lanches(nm_lanche, descricao, valor_venda, fg_ativo) &quot;</b>
+&nbsp;                + &quot;VALUES(?,?,?,?)&quot;;
+&nbsp;        
+&nbsp;        try{
+<b class="nc">&nbsp;            PreparedStatement stmt = conecta.prepareStatement(sql);</b>
+<b class="nc">&nbsp;            stmt.setString(1, lanche.getNome());</b>
+<b class="nc">&nbsp;            stmt.setString(2, lanche.getDescricao());</b>
+<b class="nc">&nbsp;            stmt.setDouble(3, lanche.getValor_venda());</b>
+<b class="nc">&nbsp;            stmt.setInt(4, 0);</b>
+&nbsp;
+&nbsp;            
+<b class="nc">&nbsp;            stmt.execute();</b>
+<b class="nc">&nbsp;            stmt.close();</b>
+&nbsp;            
+&nbsp;            
+<b class="nc">&nbsp;        }catch(Exception e){</b>
+<b class="nc">&nbsp;            throw new RuntimeException(e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;    
+&nbsp;    public List&lt;Lanche&gt; listarTodos(){
+<b class="nc">&nbsp;        String sql = &quot;SELECT * FROM tb_lanches WHERE fg_Ativo=&#39;1&#39; ORDER BY id_lanche&quot;;</b>
+&nbsp;        ResultSet rs;
+<b class="nc">&nbsp;        List&lt;Lanche&gt; lanches = new ArrayList&lt;Lanche&gt;();</b>
+&nbsp;        
+&nbsp;        try{
+&nbsp;            
+<b class="nc">&nbsp;            PreparedStatement stmt = conecta.prepareStatement(sql);</b>
+<b class="nc">&nbsp;            rs = stmt.executeQuery();</b>
+&nbsp;            
+<b class="nc">&nbsp;            while (rs.next()){</b>
+&nbsp;            
+<b class="nc">&nbsp;                Lanche lanche = new Lanche();</b>
+<b class="nc">&nbsp;                lanche.setId_lanche(rs.getInt(&quot;id_lanche&quot;));</b>
+<b class="nc">&nbsp;                lanche.setNome(rs.getString(&quot;nm_lanche&quot;));</b>
+<b class="nc">&nbsp;                lanche.setDescricao(rs.getString(&quot;descricao&quot;));</b>
+<b class="nc">&nbsp;                lanche.setValor_venda(rs.getDouble(&quot;valor_venda&quot;));</b>
+<b class="nc">&nbsp;                lanche.setFg_ativo(1);</b>
+&nbsp;                
+<b class="nc">&nbsp;                lanches.add(lanche);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            rs.close();</b>
+<b class="nc">&nbsp;            stmt.close();</b>
+<b class="nc">&nbsp;            return lanches;</b>
+&nbsp;        
+&nbsp;            
+<b class="nc">&nbsp;        } catch(SQLException e){</b>
+&nbsp;            
+<b class="nc">&nbsp;             throw new RuntimeException(e);</b>
+&nbsp;        }
+&nbsp;        
+&nbsp;    }
+&nbsp;    
+&nbsp;    public Lanche pesquisaPorNome(Lanche lanche){
+<b class="nc">&nbsp;        String sql = &quot;SELECT * FROM tb_lanches WHERE nm_lanche=&#39;&quot;+lanche.getNome()+&quot;&#39;&quot;;</b>
+&nbsp;        ResultSet rs;
+<b class="nc">&nbsp;        Lanche lancheResultado = new Lanche();</b>
+&nbsp;        
+&nbsp;        try{
+&nbsp;            
+<b class="nc">&nbsp;            PreparedStatement stmt = conecta.prepareStatement(sql);</b>
+<b class="nc">&nbsp;            rs = stmt.executeQuery();</b>
+&nbsp;            
+<b class="nc">&nbsp;            while (rs.next()){</b>
+&nbsp;            
+<b class="nc">&nbsp;                lancheResultado.setId_lanche(rs.getInt(&quot;id_lanche&quot;));</b>
+<b class="nc">&nbsp;                lancheResultado.setNome(rs.getString(&quot;nm_lanche&quot;));</b>
+<b class="nc">&nbsp;                lancheResultado.setDescricao(rs.getString(&quot;descricao&quot;));</b>
+<b class="nc">&nbsp;                lancheResultado.setValor_venda(rs.getDouble(&quot;valor_venda&quot;));</b>
+<b class="nc">&nbsp;                lancheResultado.setFg_ativo(1);</b>
+&nbsp;                
+&nbsp;            }
+<b class="nc">&nbsp;            rs.close();</b>
+<b class="nc">&nbsp;            stmt.close();</b>
+<b class="nc">&nbsp;            return lancheResultado;</b>
+&nbsp;        
+&nbsp;            
+<b class="nc">&nbsp;        } catch(SQLException e){</b>
+&nbsp;            
+<b class="nc">&nbsp;             throw new RuntimeException(e);</b>
+&nbsp;        }
+&nbsp;        
+&nbsp;    }
+&nbsp;    
+&nbsp;    public Lanche pesquisaPorNome(String nome){
+<b class="nc">&nbsp;        String sql = &quot;SELECT * FROM tb_lanches WHERE nm_lanche=&#39;&quot;+nome+&quot;&#39;&quot;;</b>
+&nbsp;        ResultSet rs;
+<b class="nc">&nbsp;        Lanche lancheResultado = new Lanche();</b>
+&nbsp;        
+&nbsp;        try{
+&nbsp;            
+<b class="nc">&nbsp;            PreparedStatement stmt = conecta.prepareStatement(sql);</b>
+<b class="nc">&nbsp;            rs = stmt.executeQuery();</b>
+&nbsp;            
+<b class="nc">&nbsp;            while (rs.next()){</b>
+&nbsp;            
+<b class="nc">&nbsp;                lancheResultado.setId_lanche(rs.getInt(&quot;id_lanche&quot;));</b>
+<b class="nc">&nbsp;                lancheResultado.setNome(rs.getString(&quot;nm_lanche&quot;));</b>
+<b class="nc">&nbsp;                lancheResultado.setDescricao(rs.getString(&quot;descricao&quot;));</b>
+<b class="nc">&nbsp;                lancheResultado.setValor_venda(rs.getDouble(&quot;valor_venda&quot;));</b>
+<b class="nc">&nbsp;                lancheResultado.setFg_ativo(1);</b>
+&nbsp;                
+&nbsp;            }
+<b class="nc">&nbsp;            rs.close();</b>
+<b class="nc">&nbsp;            stmt.close();</b>
+<b class="nc">&nbsp;            return lancheResultado;</b>
+&nbsp;        
+&nbsp;            
+<b class="nc">&nbsp;        } catch(SQLException e){</b>
+&nbsp;            
+<b class="nc">&nbsp;             throw new RuntimeException(e);</b>
+&nbsp;        }
+&nbsp;        
+&nbsp;    }
+&nbsp;    public void vincularIngrediente(Lanche lanche, Ingrediente ingrediente){
+&nbsp;        
+<b class="nc">&nbsp;        String sql = &quot;INSERT INTO tb_ingredientes_lanche(id_lanche, id_ingrediente, quantidade)&quot;</b>
+&nbsp;                + &quot;VALUES(?,?,?)&quot;;
+&nbsp;        try{
+<b class="nc">&nbsp;            PreparedStatement stmt = conecta.prepareStatement(sql);</b>
+<b class="nc">&nbsp;            stmt.setInt(1, lanche.getId_lanche());</b>
+<b class="nc">&nbsp;            stmt.setInt(2, ingrediente.getId_ingrediente());</b>
+<b class="nc">&nbsp;            stmt.setInt(3, ingrediente.getQuantidade());</b>
+&nbsp;
+&nbsp;            
+<b class="nc">&nbsp;            stmt.execute();</b>
+<b class="nc">&nbsp;            stmt.close();</b>
+&nbsp;            
+<b class="nc">&nbsp;        } catch(SQLException e){</b>
+&nbsp;            
+<b class="nc">&nbsp;             throw new RuntimeException(e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+&nbsp;    
+&nbsp;    
+&nbsp;    
+&nbsp;    
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-07-01 08:13</div>
+</div>
+</body>
+</html>
